@@ -12,7 +12,7 @@
       <img src="src/assets/images/logo.svg" alt="">
     </a>
 
-    <button class="bg-neutral-700 w-20 p-1.5 items-center flex  justify-between rounded h-fit shadow">
+    <button class="bg-neutral-800 border border-neutral-700 w-20 p-1.5 items-center flex  justify-between rounded h-fit shadow">
       <img src="src/assets/images/icon-units.svg" alt="units" class="w-3 h-3">
       <p class="font-heading text-sm">Units</p>
       <img src="src/assets/images/icon-dropdown.svg" class="w-3 h-3" alt="drowpdown">
@@ -22,37 +22,171 @@
   <head>
     <h1 class="text-center text-5xl my-10">How's the sky looking today?</h1>
     <form action="" method="" class="flex justify-center gap-x-4">
-      <input type="text" name="place" id="place" class="bg-neutral-700 w-[40%] rounded-lg  p-2" placeholder="Search for a place...">
+      <div class="flex bg-neutral-800 w-full gap-x-3 pl-4 p-2 max-w-md rounded-xl border border-neutral-700 items-center focus-within:border-white focus-within:border-2">
+        <img src="src/assets/images/icon-search.svg" alt="search" class="w-5 h-5">
+        <input type="text" name="place" id="place" class="bg-transparent focus-within:border-none w-full outline-none" placeholder="Search for a place...">
+      </div>
       <button type="submit" class="bg-blue-500 p-2 rounded-lg">Search</button>
     </form>
   </head>
 
   <main class="flex justify-between mt-5">
-    <section class="w-[67%]">
-      <section class="h-50 bg-cover bg-center rounded-xl bg-todayl mb-4"></section>
+    <section class="w-[63%]">
+      <section class="flex justify-between p-5 items-center h-60 bg-cover bg-center rounded-xl bg-todayl mb-6">
+        <div>
+          <h4 class="font-sans text-2xl">Berlin, Germany</h4>
+          <p class="font-light text-sm text-neutral-200">Tuesday, Aug 5, 2025</p>
+        </div>
+        <div class="flex items-center">
+          <img src="src/assets/images/icon-sunny.webp" class="h-23 w-23" alt="sunny">
+          <h5 class="font-sans italic text-8xl">20°</h5>  
+        </div>
+      </section>
       
-      <section class="grid grid-cols-4 space-x-5">
-        <div class="h-20 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-20 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-20 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-20 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
+      <section class="grid grid-cols-4 space-x-5 mb-10">
+        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+          <h6 class="font-sans font-light text-sm text-neutral-200">Feels Like</h6>
+          <p class="font-light text-2xl p-0 ">18°</p>
+        </div>
+        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+          <h6 class="font-sans font-light text-sm text-neutral-200">Humidity</h6>
+          <p class="font-light text-2xl p-0 ">46%</p>
+        </div>
+        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+          <h6 class="font-sans font-light text-sm text-neutral-200">Wind</h6>
+          <p class="font-light text-2xl p-0 ">14 km/h</p>
+        </div>
+        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+          <h6 class="font-sans font-light text-sm text-neutral-200">Precipitation</h6>
+          <p class="font-light text-2xl p-0 ">0 mm</p>
+        </div>
       </section>
 
       <p class="mb-2">Daily forecast</p>
       <section class="grid space-x-3 grid-cols-7">
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        <div class="h-30 bg-neutral-700 rounded-lg p-5 border border-neutral-600"></div>
-        
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Tue</span>
+          <img src="src/assets/images/icon-storm.webp" alt="storm" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Wed</span>
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Thu</span>
+          <img src="src/assets/images/icon-sunny.webp" alt="storm" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Fri</span>
+          <img src="src/assets/images/icon-drizzle.webp" alt="drizzle" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Sat</span>
+          <img src="src/assets/images/icon-partly-cloudy.webp" alt="partly-cloudy" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Sun</span>
+          <img src="src/assets/images/icon-snow.webp" alt="snow" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
+        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 ">Mon</span>
+          <img src="src/assets/images/icon-fog.webp" alt="fog" class="w-12 h-12">
+          <span class="flex justify-between w-full">
+            <span class="text-sm font-medium text-neutral-200">18°</span>
+            <span class="text-sm font-medium text-neutral-200">14°</span>
+          </span>
+        </div>
       </section>
     </section>
 
-    <section class="h-auto w-[30%] bg-neutral-700 rounded-xl">
-
+    <section class="h-auto flex flex-col gap-y-3 w-[35%] bg-neutral-800 border border-neutral-700 rounded-xl p-5">
+      <span class="flex justify-between items-center">
+        <p class="text-md font-medium">Hourly forecast</p>
+        <button class="bg-neutral-600 w-24 p-1.5 px-3 items-center flex  justify-between rounded-lg h-fit shadow">
+          <p class="font-sans text-sm font-light">Tuesday</p>
+          <img src="src/assets/images/icon-dropdown.svg" class="w-3 h-3" alt="drowpdown">
+        </button>
+      </span>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
+      <div class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-24 gap-x-2 items-center">
+          <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">3 PM</span>
+        </span>
+        <span class="font-light text-sm">20°</span>
+      </div>
     </section>
   </main>
 
