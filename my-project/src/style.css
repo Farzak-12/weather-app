@@ -19,7 +19,7 @@
   
   --font-sans: 'DM Sans', sans-serif;
   --font-heading: 'Bricolage Grotesque', sans-serif;
-
+  --breakpoint-md: 769px;
   --background-image-todayl: url('/src/assets/images/bg-today-large.svg');
 }
 

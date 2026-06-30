@@ -21,8 +21,8 @@
 
   <head>
     <h1 class="text-center text-5xl my-10">How's the sky looking today?</h1>
-    <form action="" method="" class="flex justify-center gap-x-4">
-      <div class="flex bg-neutral-800 w-full gap-x-3 pl-4 p-2 max-w-md rounded-xl border border-neutral-700 items-center focus-within:border-white focus-within:border-2">
+    <form action="" method="" class="flex justify-center gap-x-4 max-sm:flex-col gap-y-3">
+      <div class="flex bg-neutral-800 w-[50%] max-sm:w-full gap-x-3 pl-4 p-2  rounded-xl border border-neutral-700 items-center focus-within:border-white focus-within:border-2">
         <img src="src/assets/images/icon-search.svg" alt="search" class="w-5 h-5">
         <input type="text" name="place" id="place" class="bg-transparent focus-within:border-none w-full outline-none" placeholder="Search for a place...">
       </div>
@@ -30,12 +30,12 @@
     </form>
   </head>
 
-  <main class="flex justify-between mt-5">
-    <section class="w-[63%]">
-      <section class="flex justify-between p-5 items-center h-60 bg-cover bg-center rounded-xl bg-todayl mb-6">
+  <main class="flex justify-between mt-5 max-sm:flex-col">
+    <section class="w-[63%] max-sm:w-full">
+      <section class="flex max-md:flex-col justify-between p-5 items-center h-60 bg-cover bg-center rounded-xl bg-todayl mb-6">
         <div>
-          <h4 class="font-sans text-2xl">Berlin, Germany</h4>
-          <p class="font-light text-sm text-neutral-200">Tuesday, Aug 5, 2025</p>
+          <h4 class="font-sans text-2xl max-md:text-center">Berlin, Germany</h4>
+          <p class="font-light text-sm max-md:text-center text-neutral-200">Tuesday, Aug 5, 2025</p>
         </div>
         <div class="flex items-center">
           <img src="src/assets/images/icon-sunny.webp" class="h-23 w-23" alt="sunny">
@@ -43,27 +43,27 @@
         </div>
       </section>
       
-      <section class="grid grid-cols-4 space-x-5 mb-10">
-        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+      <section class="grid grid-cols-4 gap-3 mb-10 max-[830px]:grid-cols-2">
+        <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Feels Like</h6>
           <p class="font-light text-2xl p-0 ">18°</p>
         </div>
-        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+        <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Humidity</h6>
           <p class="font-light text-2xl p-0 ">46%</p>
         </div>
-        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+        <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Wind</h6>
           <p class="font-light text-2xl p-0 ">14 km/h</p>
         </div>
-        <div class="h-21 flex flex-col gap-3 bg-neutral-800 p-3 rounded-lg border border-neutral-700">
+        <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Precipitation</h6>
           <p class="font-light text-2xl p-0 ">0 mm</p>
         </div>
       </section>
 
       <p class="mb-2">Daily forecast</p>
-      <section class="grid space-x-3 grid-cols-7">
+      <section class="grid gap-3 grid-cols-7 max-sm:grid-cols-3 max-md:grid-cols-5">
         <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
           <span class="text-sm font-medium text-neutral-200 ">Tue</span>
           <img src="src/assets/images/icon-storm.webp" alt="storm" class="w-12 h-12">
@@ -123,7 +123,7 @@
       </section>
     </section>
 
-    <section class="h-auto flex flex-col gap-y-3 w-[35%] bg-neutral-800 border border-neutral-700 rounded-xl p-5">
+    <section class="h-auto flex flex-col justify-between w-[35%] max-sm:w-full max-sm:gap-3 max-sm:mt-7 bg-neutral-800 border border-neutral-700 rounded-xl p-4">
       <span class="flex justify-between items-center">
         <p class="text-md font-medium">Hourly forecast</p>
         <button class="bg-neutral-600 w-24 p-1.5 px-3 items-center flex  justify-between rounded-lg h-fit shadow">
