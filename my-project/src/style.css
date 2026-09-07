@@ -44,4 +44,5 @@
   .selected{
     @apply flex justify-between bg-neutral-700 rounded-md;
   }
+  
 }

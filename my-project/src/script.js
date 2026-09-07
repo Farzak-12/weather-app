@@ -6,9 +6,15 @@ const tempOpt = document.querySelectorAll('[data-group="temp"]');
 const windOpt = document.querySelectorAll('[data-group="wind"]');
 const precipOpt = document.querySelectorAll('[data-group="precipitation"]');
 
+const searchBar = document.getElementById("search-bar");
+const searchDropdown = document.getElementById("search-dropdown")
+let searchTimeout;
+
 const prefTempUnit = localStorage.getItem('temp') || "celsius";
 const prefWindUnit = localStorage.getItem('wind') || "km/h";
 const prefPrecipUnit = localStorage.getItem('precipitation') || "millimeters";
+
+
 
 unitsDropdownBtn.addEventListener("click", ()=> {
     unitsDropdown.classList.toggle("opacity-0");
@@ -54,6 +60,45 @@ const selectPrefUnit = (unitValue) => {
         prefUnitBtn.getElementsByTagName("img")[0]?.classList.remove("hidden");
     }
 };
+
+const clearDropdown = ()=>{
+    searchDropdown.innerHTML = ""
+    searchDropdown.classList.add("hidden");
+}
+
+const renderDropdownResult = (result) => {
+    if (result && result.length > 0) {
+        const htmlString = result.map((location) => {
+            return `<li role="option" tabindex="-1" data-lat="${location.latitude}" data-lon="${location.longitude}" class="text-md text-neutral-200 font-normal w-full p-1.5 hover:bg-neutral-700 hover:rounded-lg hover:shadow-lg cursor-pointer transition-all ease-out duration-50">${location.name}, ${location.country}</li>`;
+        }).join("");
+
+        searchDropdown.innerHTML = htmlString;
+        searchDropdown.classList.remove("hidden");
+    } else {
+        clearDropdown();
+    }
+}
+
+searchBar.addEventListener("input", (e) => {
+    clearTimeout(searchTimeout);
+    
+    const query = e.target.value.trim();
+
+    if (!query) {
+        clearDropdown();
+        return;
+    }
+
+    searchTimeout = setTimeout(async () => {
+        try {
+            const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=5&language=en&format=json`);
+            const data = await response.json();
+            renderDropdownResult(data.results);
+        } catch(error) {
+            console.error(`Error: ${error}`);
+        }
+    }, 300);
+});
 
 toggleUnit(tempOpt);
 toggleUnit(windOpt);
