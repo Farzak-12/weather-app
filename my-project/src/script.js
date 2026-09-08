@@ -19,14 +19,18 @@ const currentInfo = {};
 const currLoc = document.getElementById("curr-loc");
 const todaysDate = document.getElementById("todays-date");
 const currTemp = document.getElementById("curr-temp");
+const feelsLike = document.getElementById("feels-like");
+const humidity = document.getElementById("humidity");
+const wind = document.getElementById("wind");
+const precipitation = document.getElementById("precipitation");
 
 const unitAppend = {
     celcius: "",
     farenheit: "&temperature_unit=fahrenheit",
     "km/h": "",
     mph: "&wind_speed_unit=mph",
-    millimeters: "",
-    inches: "&precipitation_unit=inch",
+    millimeters: ["","mm"],
+    inches: ["&precipitation_unit=inch","in"],
 };
 
 
@@ -106,12 +110,11 @@ const renderDropdownResult = (result) => {
 }
 const updatePageContent = async ({lat, lon, place}) => {
     try{
-        const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celsius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"]}`);
+        const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celsius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"][0]}`);
         const data = await result.json();
 
-        //city card update
+        //City card update
         currLoc.innerText = place;
-
         const date = new Date(data.current?.time);
         const option ={
             weekday: "long",
@@ -120,8 +123,14 @@ const updatePageContent = async ({lat, lon, place}) => {
             day: "numeric",
         };
         todaysDate.innerText  = date.toLocaleDateString("en-GB", option);
-
         currTemp.innerText = `${Math.round(data.current?.temperature_2m)}°`;
+
+        
+        feelsLike.innerText = `${Math.round(data.current?.apparent_temperature)}°`;
+        humidity.innerText = `${data.current?.relative_humidity_2m}%`;
+        wind.innerText = `${Math.round(data.current?.wind_speed_10m)} ${localStorage.getItem('wind') || "km/h"}`;
+        precipitation.innerText = `${Math.round(data.current?.precipitation)} ${unitAppend[localStorage.getItem('precipitation') || "millimeters"][1]}`;
+    
         
         console.log(data);
     }
