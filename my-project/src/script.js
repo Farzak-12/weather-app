@@ -13,7 +13,21 @@ let searchTimeout;
 const prefTempUnit = localStorage.getItem('temp') || "celsius";
 const prefWindUnit = localStorage.getItem('wind') || "km/h";
 const prefPrecipUnit = localStorage.getItem('precipitation') || "millimeters";
+const currentInfo = {};
 
+//updated elements
+const currLoc = document.getElementById("curr-loc");
+const todaysDate = document.getElementById("todays-date");
+const currTemp = document.getElementById("curr-temp");
+
+const unitAppend = {
+    celcius: "",
+    farenheit: "&temperature_unit=fahrenheit",
+    "km/h": "",
+    mph: "&wind_speed_unit=mph",
+    millimeters: "",
+    inches: "&precipitation_unit=inch",
+};
 
 
 unitsDropdownBtn.addEventListener("click", ()=> {
@@ -46,8 +60,9 @@ const toggleUnit = (unitGroup) => {
                     otherBtn.getElementsByTagName("img")[0].classList.add("hidden");
                 });
 
-            // 2. Save using the data-group name (e.g., 'temp') instead of the ID
+            //Save using the data-group name (e.g., 'temp') instead of the ID
             localStorage.setItem(btn.dataset.group, btn.value);
+            updatePageContent(currentInfo);
         });
     });
 };
@@ -69,13 +84,49 @@ const clearDropdown = ()=>{
 const renderDropdownResult = (result) => {
     if (result && result.length > 0) {
         const htmlString = result.map((location) => {
-            return `<li role="option" tabindex="-1" data-lat="${location.latitude}" data-lon="${location.longitude}" class="text-md text-neutral-200 font-normal w-full p-1.5 hover:bg-neutral-700 hover:rounded-lg hover:shadow-lg cursor-pointer transition-all ease-out duration-50">${location.name}, ${location.country}</li>`;
+            return `<li role="option" data-group="search-option" tabindex="-1" data-lat="${location.latitude}" data-lon="${location.longitude}" class="text-md text-neutral-200 font-normal w-full p-1.5 hover:bg-neutral-700 hover:rounded-lg hover:shadow-lg cursor-pointer transition-all ease-out duration-50">${location.name}, ${location.country}</li>`;
         }).join("");
 
         searchDropdown.innerHTML = htmlString;
+
+        document.querySelectorAll('[data-group="search-option"]').forEach((option)=>{
+            option.addEventListener("click", () => {
+                currentInfo.lat = option.dataset.lat;
+                currentInfo.lon = option.dataset.lon;
+                currentInfo.place = option.innerText;
+                updatePageContent(currentInfo);
+                clearDropdown();
+                searchBar.value = "";
+            })
+        })
         searchDropdown.classList.remove("hidden");
     } else {
         clearDropdown();
+    }
+}
+const updatePageContent = async ({lat, lon, place}) => {
+    try{
+        const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celsius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"]}`);
+        const data = await result.json();
+
+        //city card update
+        currLoc.innerText = place;
+
+        const date = new Date(data.current?.time);
+        const option ={
+            weekday: "long",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        };
+        todaysDate.innerText  = date.toLocaleDateString("en-GB", option);
+
+        currTemp.innerText = `${Math.round(data.current?.temperature_2m)}°`;
+        
+        console.log(data);
+    }
+    catch(error){
+        console.error(`Error: ${error}`)
     }
 }
 
