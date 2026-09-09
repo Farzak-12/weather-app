@@ -35,21 +35,14 @@ const unitAppend = {
 };
 
 
-unitsDropdownBtn.addEventListener("click", ()=> {
-    unitsDropdown.classList.toggle("opacity-0");
-    unitsDropdown.classList.toggle("scale-95");
-    unitsDropdown.classList.toggle("invisible");
 
-    unitsDropdown.classList.toggle("opacity-100");
-    unitsDropdown.classList.toggle("scale-100");
-    unitsDropdown.classList.toggle("visible");
-});
 
 document.addEventListener("DOMContentLoaded", ()=>{
     selectPrefUnit(prefTempUnit);
     selectPrefUnit(prefWindUnit);
     selectPrefUnit(prefPrecipUnit);
 });
+
 
 const toggleUnit = (unitGroup) => {
     unitGroup.forEach((btn) => {
@@ -81,7 +74,7 @@ const selectPrefUnit = (unitValue) => {
     }
 };
 
-const clearDropdown = ()=>{
+const clearSearchDropdown = ()=>{
     searchDropdown.innerHTML = ""
     searchDropdown.classList.add("hidden");
 }
@@ -95,18 +88,18 @@ const renderDropdownResult = (result) => {
         searchDropdown.innerHTML = htmlString;
 
         document.querySelectorAll('[data-group="search-option"]').forEach((option)=>{
-            option.addEventListener("click", () => {
+            option.addEventListener("mousedown", () => {
                 currentInfo.lat = option.dataset.lat;
                 currentInfo.lon = option.dataset.lon;
                 currentInfo.place = option.innerText;
                 updatePageContent(currentInfo);
-                clearDropdown();
+                clearSearchDropdown();
                 searchBar.value = "";
             })
         })
         searchDropdown.classList.remove("hidden");
     } else {
-        clearDropdown();
+        clearSearchDropdown();
     }
 }
 
@@ -141,13 +134,25 @@ const updatePageContent = async ({lat, lon, place}) => {
     }
 }
 
+function toggleUnitsDropdown() {
+    unitsDropdown.classList.toggle("opacity-0");
+    unitsDropdown.classList.toggle("scale-95");
+    unitsDropdown.classList.toggle("invisible");
+
+    unitsDropdown.classList.toggle("opacity-100");
+    unitsDropdown.classList.toggle("scale-100");
+    unitsDropdown.classList.toggle("visible");
+    if(unitsDropdown.classList.contains("visible")) unitsDropdown.setAttribute("aria-expanded", "true");
+    else unitsDropdown.setAttribute("aria-expanded", "false");
+}
+
 searchBar.addEventListener("input", (e) => {
     clearTimeout(searchTimeout);
     
     const query = e.target.value.trim();
 
     if (!query) {
-        clearDropdown();
+        clearSearchDropdown();
         return;
     }
 
@@ -165,12 +170,44 @@ searchBar.addEventListener("input", (e) => {
 searchBtn.addEventListener("click", (e)=>{
     e.preventDefault();
     const firstOption = document.querySelector('[data-group="search-option"]');
+    
+    
+    if (!firstOption) return; 
+
     currentInfo.lat = firstOption.dataset.lat;
     currentInfo.lon = firstOption.dataset.lon;
     currentInfo.place = firstOption.innerText;
+    
+    clearSearchDropdown();
     updatePageContent(currentInfo);
+    searchBar.value = "";
+});
+
+searchBar.addEventListener("focusout", (e)=>{
+    const isClickingInDropdown = searchDropdown.contains(e.relatedTarget);
+
+    if(!isClickingInDropdown){
+        clearSearchDropdown();
+    }
+});
+
+unitsDropdownBtn.addEventListener("mousedown", ()=> {
+    toggleUnitsDropdown();
+});
+
+document.addEventListener("click",(e)=>{
+    if(unitsDropdown.getAttribute("aria-expanded") === "true"){
+        const isClickingInDropdown = unitsDropdown.contains(e.target) || unitsDropdownBtn.contains(e.target);
+        if(!isClickingInDropdown){
+            toggleUnitsDropdown();
+        } 
+    }
 })
+
+
 
 toggleUnit(tempOpt);
 toggleUnit(windOpt);
 toggleUnit(precipOpt);
+
+

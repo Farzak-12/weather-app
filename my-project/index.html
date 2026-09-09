@@ -12,13 +12,13 @@
       <img src="src/assets/images/logo.svg" alt="">
     </a>
     <div class="relative">
-      <button id="unitsDropdownBtn" class="bg-neutral-800 border cursor-pointer border-neutral-700 w-22 p-1.5 items-center flex  justify-between rounded h-fit shadow">
+      <button id="unitsDropdownBtn" aria-controls="units-dropdown" class="bg-neutral-800 border cursor-pointer border-neutral-700 w-22 p-1.5 items-center flex  justify-between rounded h-fit shadow">
         <img src="src/assets/images/icon-units.svg" alt="units" class="w-3 h-3">
         <p class="font-heading text-sm">Units</p>
         <img src="src/assets/images/icon-dropdown.svg" class="w-3 h-3" alt="dropdown">
       </button>
 
-      <div id="units-dropdown" class="opacity-0 invisible scale-95 transition-all delay-150 duration-100 ease-in-out absolute z-10 bg-neutral-800 border border-neutral-700 w-40 p-1.5 mt-1 right-0 rounded h-fit shadow-lg">
+      <div id="units-dropdown" role="listbox" aria-expanded="false" class="opacity-0 invisible scale-95 transition-all delay-150 duration-100 ease-in-out absolute z-10 bg-neutral-800 border border-neutral-700 w-40 p-1.5 mt-1 right-0 rounded h-fit shadow-lg">
         <p class="text-neutral-400 text-xs">Temperature</p>
         <button data-group="temp" value="celcius" class="text-sm text-left w-full p-1 mt-1 cursor-pointer"><span>Celsius(°C)</span><img id="check-img" src="src\assets\images\icon-checkmark.svg" alt="" class="hidden"></button>
         <button data-group="temp" value="farenheit" class="text-sm w-full text-left mt-1 p-1 cursor-pointer"><span>Farenheit(°F)</span><img id="check-img" src="src\assets\images\icon-checkmark.svg" alt="" class="hidden"></button>
@@ -47,7 +47,7 @@
         <input id="search-bar" aria-controls="search-dropdown" type="text" name="place" id="place" class="bg-transparent focus-within:border-none w-full outline-none" placeholder="Search for a place...">
       </div>
 
-      <ul id="search-dropdown" role="listbox" class="absolute top-full w-full bg-neutral-800 p-3 border border-neutral-700 mt-2 rounded-xl shadow-lg z-50 hidden">
+      <ul id="search-dropdown" role="listbox" aria-expanded="false" class="absolute top-full w-full bg-neutral-800 p-3 border border-neutral-700 mt-2 rounded-xl shadow-lg z-50 hidden">
         <li role="option" tabindex="-1" class="text-md text-neutral-200 font-normal w-full p-1.5 hover:bg-neutral-700 hover:rounded-lg hover:shadow-lg cursor-pointer transition-all ease-out duration-50">Berlin, Germany</li>
         <li role="option" tabindex="-1" class="text-md text-neutral-200 font-normal w-full p-1.5 hover:bg-neutral-700 hover:rounded-lg hover:shadow-lg cursor-pointer transition-all ease-out duration-50">Bermuda</li>
       </ul>
