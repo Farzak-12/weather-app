@@ -7,7 +7,8 @@ const windOpt = document.querySelectorAll('[data-group="wind"]');
 const precipOpt = document.querySelectorAll('[data-group="precipitation"]');
 
 const searchBar = document.getElementById("search-bar");
-const searchDropdown = document.getElementById("search-dropdown")
+const searchDropdown = document.getElementById("search-dropdown");
+const searchBtn = document.getElementById("search-btn");
 let searchTimeout;
 
 const prefTempUnit = localStorage.getItem('temp') || "celsius";
@@ -108,6 +109,7 @@ const renderDropdownResult = (result) => {
         clearDropdown();
     }
 }
+
 const updatePageContent = async ({lat, lon, place}) => {
     try{
         const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celsius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"][0]}`);
@@ -159,6 +161,15 @@ searchBar.addEventListener("input", (e) => {
         }
     }, 300);
 });
+
+searchBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    const firstOption = document.querySelector('[data-group="search-option"]');
+    currentInfo.lat = firstOption.dataset.lat;
+    currentInfo.lon = firstOption.dataset.lon;
+    currentInfo.place = firstOption.innerText;
+    updatePageContent(currentInfo);
+})
 
 toggleUnit(tempOpt);
 toggleUnit(windOpt);
