@@ -61,90 +61,90 @@
     <section class="w-[63%] max-sm:w-full">
       <section class="flex max-md:flex-col justify-between p-5 items-center h-60 bg-cover bg-center rounded-xl bg-todayl mb-6">
         <div>
-          <h4 class="font-sans text-2xl max-md:text-center" id="curr-loc">Berlin, Germany</h4>
-          <p class="font-light text-sm max-md:text-center text-neutral-200" id="todays-date">Tuesday, Aug 5, 2025</p>
+          <h4 class="font-sans text-2xl max-md:text-center" id="curr-loc"></h4>
+          <p class="font-light text-sm max-md:text-center text-neutral-200" id="todays-date"></p>
         </div>
         <div class="flex items-center">
           <img src="src/assets/images/icon-sunny.webp" class="h-23 w-23" alt="sunny">
-          <h5 class="font-sans italic text-8xl" id="curr-temp" >20°</h5>  
+          <h5 class="font-sans italic text-8xl" id="curr-temp" ></h5>  
         </div>
       </section>
       
       <section class="grid grid-cols-4 gap-3 mb-10 max-[830px]:grid-cols-2">
         <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6  class="font-sans font-light text-sm text-neutral-200">Feels Like</h6>
-          <p id="feels-like" class="font-light text-2xl p-0 ">18°</p>
+          <p id="feels-like" class="font-light text-2xl p-0 "></p>
         </div>
         <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Humidity</h6>
-          <p id="humidity" class="font-light text-2xl p-0 ">46%</p>
+          <p id="humidity" class="font-light text-2xl p-0 "></p>
         </div>
         <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Wind</h6>
-          <p id="wind" class="font-light text-2xl p-0">14 km/h</p>
+          <p id="wind" class="font-light text-2xl p-0"></p>
         </div>
         <div class="h-23 flex flex-col gap-[30%] bg-neutral-800 p-3 rounded-lg border border-neutral-700">
           <h6 class="font-sans font-light text-sm text-neutral-200">Precipitation</h6>
-          <p id="precipitation" class="font-light text-2xl p-0 ">0 mm</p>
+          <p id="precipitation" class="font-light text-2xl p-0 "></p>
         </div>
       </section>
 
       <p class="mb-2">Daily forecast</p>
       <section class="grid gap-3 grid-cols-7 max-sm:grid-cols-3 max-md:grid-cols-5">
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Tue</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-storm.webp" alt="storm" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Wed</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-overcast.webp" alt="overcast" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Thu</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-sunny.webp" alt="storm" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Fri</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-drizzle.webp" alt="drizzle" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Sat</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-partly-cloudy.webp" alt="partly-cloudy" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Sun</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-snow.webp" alt="snow" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
-        <div class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
-          <span class="text-sm font-medium text-neutral-200 ">Mon</span>
+        <div data-group="daily-cards" class="h-35 bg-neutral-800 rounded-lg p-2 border border-neutral-700 flex flex-col items-center gap-4">
+          <span class="text-sm font-medium text-neutral-200 "></span>
           <img src="src/assets/images/icon-fog.webp" alt="fog" class="w-12 h-12">
           <span class="flex justify-between w-full">
-            <span class="text-sm font-medium text-neutral-200">18°</span>
-            <span class="text-sm font-medium text-neutral-200">14°</span>
+            <span class="text-sm font-medium text-neutral-200"></span>
+            <span class="text-sm font-medium text-neutral-200"></span>
           </span>
         </div>
       </section>

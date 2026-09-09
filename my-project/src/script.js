@@ -1,7 +1,6 @@
 const unitsDropdownBtn = document.getElementById("unitsDropdownBtn");
 const unitsDropdown = document.getElementById("units-dropdown");
 
-
 const tempOpt = document.querySelectorAll('[data-group="temp"]');
 const windOpt = document.querySelectorAll('[data-group="wind"]');
 const precipOpt = document.querySelectorAll('[data-group="precipitation"]');
@@ -11,10 +10,11 @@ const searchDropdown = document.getElementById("search-dropdown");
 const searchBtn = document.getElementById("search-btn");
 let searchTimeout;
 
-const prefTempUnit = localStorage.getItem('temp') || "celsius";
+const prefTempUnit = localStorage.getItem('temp') || "celcius";
 const prefWindUnit = localStorage.getItem('wind') || "km/h";
 const prefPrecipUnit = localStorage.getItem('precipitation') || "millimeters";
 const currentInfo = {};
+
 
 //updated elements
 const currLoc = document.getElementById("curr-loc");
@@ -24,6 +24,15 @@ const feelsLike = document.getElementById("feels-like");
 const humidity = document.getElementById("humidity");
 const wind = document.getElementById("wind");
 const precipitation = document.getElementById("precipitation");
+const dailyCards = document.querySelectorAll('[data-group="daily-cards"]');
+const dailyDates = [];
+const dailyMinTemp = [];
+const dailyMaxTemp = [];
+dailyCards.forEach((card) => {
+    dailyDates.push(card.getElementsByTagName("span")[0]);
+    dailyMaxTemp.push(card.getElementsByTagName("span")[2]);
+    dailyMinTemp.push(card.getElementsByTagName("span")[3]);
+})
 
 const unitAppend = {
     celcius: "",
@@ -35,12 +44,35 @@ const unitAppend = {
 };
 
 
-
-
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", async () => {
     selectPrefUnit(prefTempUnit);
     selectPrefUnit(prefWindUnit);
     selectPrefUnit(prefPrecipUnit);
+
+    const loadDefaultLocation = () => {
+        currentInfo.lat = "38.7322";
+        currentInfo.lon = "35.4853";
+        currentInfo.place = "Kayseri, Türkiye";
+        updatePageContent(currentInfo);
+    };
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                currentInfo.lat = position.coords.latitude;
+                currentInfo.lon = position.coords.longitude;
+                currentInfo.place = "Current Location";
+                updatePageContent(currentInfo);
+            },
+            (error) => {
+                console.warn("Location denied. Loading default.", error.message);
+                loadDefaultLocation(); 
+            }
+        );
+    } else {
+        console.warn("Geolocation unsupported. Loading default.");
+        loadDefaultLocation(); 
+    }
 });
 
 
@@ -65,19 +97,6 @@ const toggleUnit = (unitGroup) => {
     });
 };
 
-const selectPrefUnit = (unitValue) => {
-    const prefUnitBtn = document.querySelector(`[value="${unitValue}"]`);
-    
-    if (prefUnitBtn) {
-        prefUnitBtn.classList.add("selected");
-        prefUnitBtn.getElementsByTagName("img")[0]?.classList.remove("hidden");
-    }
-};
-
-const clearSearchDropdown = ()=>{
-    searchDropdown.innerHTML = ""
-    searchDropdown.classList.add("hidden");
-}
 
 const renderDropdownResult = (result) => {
     if (result && result.length > 0) {
@@ -105,33 +124,66 @@ const renderDropdownResult = (result) => {
 
 const updatePageContent = async ({lat, lon, place}) => {
     try{
-        const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celsius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"][0]}`);
+        const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celcius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"][0]}`);
         const data = await result.json();
 
         //City card update
-        currLoc.innerText = place;
-        const date = new Date(data.current?.time);
-        const option ={
-            weekday: "long",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        };
-        todaysDate.innerText  = date.toLocaleDateString("en-GB", option);
-        currTemp.innerText = `${Math.round(data.current?.temperature_2m)}°`;
-
-        
-        feelsLike.innerText = `${Math.round(data.current?.apparent_temperature)}°`;
-        humidity.innerText = `${data.current?.relative_humidity_2m}%`;
-        wind.innerText = `${Math.round(data.current?.wind_speed_10m)} ${localStorage.getItem('wind') || "km/h"}`;
-        precipitation.innerText = `${Math.round(data.current?.precipitation)} ${unitAppend[localStorage.getItem('precipitation') || "millimeters"][1]}`;
-    
+        updateCurrentWeather(place, data);
+        loadDate(data.daily)
         
         console.log(data);
     }
     catch(error){
         console.error(`Error: ${error}`)
     }
+}
+
+function selectPrefUnit(unitValue) {
+    const prefUnitBtn = document.querySelector(`[value="${unitValue}"]`);
+
+    if (prefUnitBtn) {
+        prefUnitBtn.classList.add("selected");
+        prefUnitBtn.getElementsByTagName("img")[0]?.classList.remove("hidden");
+    }
+}
+
+function clearSearchDropdown() {
+    searchDropdown.innerHTML = "";
+    searchDropdown.classList.add("hidden");
+}
+
+function loadDate(dailyData) {
+    dailyDates.forEach((card, index) => {
+        const date = new Date(dailyData?.time[index]);
+        card.innerText = date.toLocaleDateString("en-GB", {weekday: "short"});
+    });
+
+    dailyMinTemp.forEach((card, index) => {
+        card.innerText = `${Math.round(dailyData.temperature_2m_min[index])}°`;
+    });
+
+    dailyMaxTemp.forEach((card, index) => {
+        card.innerText = `${Math.round(dailyData.temperature_2m_max[index])}°`;
+    });
+}
+
+function updateCurrentWeather(place, data) {
+    currLoc.innerText = place;
+    const date = new Date(data.current?.time);
+    const option = {
+        weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    };
+    todaysDate.innerText = date.toLocaleDateString("en-GB", option);
+    currTemp.innerText = `${Math.round(data.current?.temperature_2m)}°`;
+
+
+    feelsLike.innerText = `${Math.round(data.current?.apparent_temperature)}°`;
+    humidity.innerText = `${data.current?.relative_humidity_2m}%`;
+    wind.innerText = `${Math.round(data.current?.wind_speed_10m)} ${localStorage.getItem('wind') || "km/h"}`;
+    precipitation.innerText = `${Math.round(data.current?.precipitation)} ${unitAppend[localStorage.getItem('precipitation') || "millimeters"][1]}`;
 }
 
 function toggleUnitsDropdown() {
