@@ -1,6 +1,10 @@
 const unitsDropdownBtn = document.getElementById("unitsDropdownBtn");
 const unitsDropdown = document.getElementById("units-dropdown");
 
+const daysDropdownBtn = document.getElementById("daysDropdownBtn");
+const daysDropdown = document.getElementById("days-dropdown");
+const daysDropdownBtns = document.querySelectorAll('[data-group="days"]')
+
 const tempOpt = document.querySelectorAll('[data-group="temp"]');
 const windOpt = document.querySelectorAll('[data-group="wind"]');
 const precipOpt = document.querySelectorAll('[data-group="precipitation"]');
@@ -14,6 +18,7 @@ const prefTempUnit = localStorage.getItem('temp') || "celcius";
 const prefWindUnit = localStorage.getItem('wind') || "km/h";
 const prefPrecipUnit = localStorage.getItem('precipitation') || "millimeters";
 const currentInfo = {};
+let currentWeather = null;
 
 
 //updated elements
@@ -33,6 +38,8 @@ dailyCards.forEach((card) => {
     dailyMaxTemp.push(card.getElementsByTagName("span")[2]);
     dailyMinTemp.push(card.getElementsByTagName("span")[3]);
 })
+const hourlySection = document.getElementById("hourly-section");
+const hourlyDetails = document.querySelectorAll('[data-group="hourly-details"]');
 
 const unitAppend = {
     celcius: "",
@@ -126,10 +133,12 @@ const updatePageContent = async ({lat, lon, place}) => {
     try{
         const result = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&hourly=temperature_2m,weather_code&current=temperature_2m,apparent_temperature,wind_speed_10m,precipitation,relative_humidity_2m,weather_code&timezone=auto${unitAppend[localStorage.getItem('temp') || "celcius"]}${unitAppend[localStorage.getItem('wind') || "km/h"]}${unitAppend[localStorage.getItem('precipitation') || "millimeters"][0]}`);
         const data = await result.json();
+        currentWeather = data;
 
         //City card update
         updateCurrentWeather(place, data);
         loadDate(data.daily)
+        updateHourlyWeather(data.hourly);
         
         console.log(data);
     }
@@ -186,6 +195,26 @@ function updateCurrentWeather(place, data) {
     precipitation.innerText = `${Math.round(data.current?.precipitation)} ${unitAppend[localStorage.getItem('precipitation') || "millimeters"][1]}`;
 }
 
+function updateHourlyWeather(hourlyData) {
+    
+    const currentDate = new Date(hourlyData?.time[0]).toLocaleDateString("en-GB",{weekday:"long"});
+    daysDropdownBtn.getElementsByTagName("p")[0].innerText = currentDate;
+
+    daysDropdownBtns.forEach((btn,index)=>{
+        btn.innerText = new Date(hourlyData?.time[index*24]).toLocaleDateString("en-GB",{weekday:"long"})
+    })
+
+    loadHourly(currentDate);
+}
+
+function loadHourly(localeDate) {
+    const startIndex = currentWeather.hourly?.time.map(time => new Date(time).toLocaleDateString("en-GB",{weekday:"long"})).indexOf(localeDate);
+    
+    hourlyDetails.forEach((hourCard,index)=>{
+        hourCard.getElementsByTagName("span")[1].innerText = new Date(currentWeather.hourly?.time[index+startIndex]).toLocaleTimeString("en-US",{hour:'numeric',hour12:true});
+        hourCard.getElementsByTagName("span")[2].innerText =  `${Math.round(currentWeather.hourly?.temperature_2m[index+startIndex])}°`;
+    })
+}
 function toggleUnitsDropdown() {
     unitsDropdown.classList.toggle("opacity-0");
     unitsDropdown.classList.toggle("scale-95");
@@ -196,6 +225,18 @@ function toggleUnitsDropdown() {
     unitsDropdown.classList.toggle("visible");
     if(unitsDropdown.classList.contains("visible")) unitsDropdown.setAttribute("aria-expanded", "true");
     else unitsDropdown.setAttribute("aria-expanded", "false");
+}
+
+function toggleDaysDropdown() {
+    daysDropdown.classList.toggle("opacity-0");
+    daysDropdown.classList.toggle("scale-95");
+    daysDropdown.classList.toggle("invisible");
+
+    daysDropdown.classList.toggle("opacity-100");
+    daysDropdown.classList.toggle("scale-100");
+    daysDropdown.classList.toggle("visible");
+    if(daysDropdown.classList.contains("visible")) daysDropdown.setAttribute("aria-expanded", "true");
+    else daysDropdown.setAttribute("aria-expanded", "false");
 }
 
 searchBar.addEventListener("input", (e) => {
@@ -224,21 +265,22 @@ searchBtn.addEventListener("click", (e)=>{
     const firstOption = document.querySelector('[data-group="search-option"]');
     
     
-    if (!firstOption) return; 
+    if (!firstOption); 
 
     currentInfo.lat = firstOption.dataset.lat;
     currentInfo.lon = firstOption.dataset.lon;
     currentInfo.place = firstOption.innerText;
-    
-    clearSearchDropdown();
+    console.log(currentInfo);
     updatePageContent(currentInfo);
     searchBar.value = "";
+    clearSearchDropdown();
 });
 
 searchBar.addEventListener("focusout", (e)=>{
     const isClickingInDropdown = searchDropdown.contains(e.relatedTarget);
+    const isClickingInSearchBtn = searchBtn.contains(e.relatedTarget);
 
-    if(!isClickingInDropdown){
+    if(!isClickingInDropdown && !isClickingInSearchBtn){
         clearSearchDropdown();
     }
 });
@@ -247,11 +289,34 @@ unitsDropdownBtn.addEventListener("mousedown", ()=> {
     toggleUnitsDropdown();
 });
 
+daysDropdownBtn.addEventListener("mousedown", ()=> {
+    toggleDaysDropdown();
+});
+
+daysDropdownBtns.forEach((btn => {(
+    btn.addEventListener("click", ()=>{
+        loadHourly(btn.innerText);
+        toggleDaysDropdown();
+
+        [...daysDropdownBtns]
+        .filter(day => day !== btn)
+        .forEach(otherBtn => otherBtn.classList.remove("day-selected"));
+        btn.classList.add("day-selected");
+
+        daysDropdownBtn.getElementsByTagName("p")[0].innerText = btn.innerText;
+    }))
+}))
 document.addEventListener("click",(e)=>{
     if(unitsDropdown.getAttribute("aria-expanded") === "true"){
         const isClickingInDropdown = unitsDropdown.contains(e.target) || unitsDropdownBtn.contains(e.target);
         if(!isClickingInDropdown){
             toggleUnitsDropdown();
+        } 
+    }
+    if(daysDropdown.getAttribute("aria-expanded") === "true"){
+        const isClickingInDropdown = daysDropdown.contains(e.target) || daysDropdownBtn.contains(e.target);
+        if(!isClickingInDropdown){
+            toggleDaysDropdown();
         } 
     }
 })

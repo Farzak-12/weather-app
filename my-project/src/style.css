@@ -44,5 +44,11 @@
   .selected{
     @apply flex justify-between bg-neutral-700 rounded-md;
   }
-  
+  .scrollbar-set {
+    @apply  scrollbar-track-transparent scrollbar-thumb-neutral-600 scrollbar-thin;
+  }
+  .day-selected{
+    @apply bg-neutral-700 rounded-md;
+  }
 }
+  
