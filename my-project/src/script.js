@@ -25,6 +25,7 @@ let currentWeather = null;
 const currLoc = document.getElementById("curr-loc");
 const todaysDate = document.getElementById("todays-date");
 const currTemp = document.getElementById("curr-temp");
+const currTempImg = document.getElementById("curr-temp-img");
 const feelsLike = document.getElementById("feels-like");
 const humidity = document.getElementById("humidity");
 const wind = document.getElementById("wind");
@@ -48,6 +49,37 @@ const unitAppend = {
     mph: "&wind_speed_unit=mph",
     millimeters: ["","mm"],
     inches: ["&precipitation_unit=inch","in"],
+};
+
+const weatherIconMap = {
+    0: "sunny",
+    1: "partly-cloudy",
+    2: "partly-cloudy",
+    3: "overcast",
+    45: "fog",
+    48: "fog",
+    51: "drizzle",
+    53: "drizzle",
+    55: "drizzle",
+    56: "drizzle",
+    57: "drizzle",
+    61: "rain",
+    63: "rain",
+    65: "rain",
+    66: "rain",
+    67: "rain",
+    71: "snow",
+    73: "snow",
+    75: "snow",
+    77: "snow",
+    80: "rain",
+    81: "rain",
+    82: "rain",
+    85: "snow",
+    86: "snow",
+    95: "storm",
+    96: "storm",
+    99: "storm"
 };
 
 
@@ -174,6 +206,11 @@ function loadDate(dailyData) {
     dailyMaxTemp.forEach((card, index) => {
         card.innerText = `${Math.round(dailyData.temperature_2m_max[index])}°`;
     });
+
+    dailyCards.forEach((card, index )=> {
+        getIcon(card.getElementsByTagName("img")[0], dailyData.weather_code[index]);
+        console.log(card.getElementsByTagName("img")[0])
+    });
 }
 
 function updateCurrentWeather(place, data) {
@@ -185,9 +222,10 @@ function updateCurrentWeather(place, data) {
         month: "short",
         day: "numeric",
     };
+
     todaysDate.innerText = date.toLocaleDateString("en-GB", option);
     currTemp.innerText = `${Math.round(data.current?.temperature_2m)}°`;
-
+    getIcon(currTempImg, data.current?.weather_code);
 
     feelsLike.innerText = `${Math.round(data.current?.apparent_temperature)}°`;
     humidity.innerText = `${data.current?.relative_humidity_2m}%`;
@@ -213,6 +251,7 @@ function loadHourly(localeDate) {
     hourlyDetails.forEach((hourCard,index)=>{
         hourCard.getElementsByTagName("span")[1].innerText = new Date(currentWeather.hourly?.time[index+startIndex]).toLocaleTimeString("en-US",{hour:'numeric',hour12:true});
         hourCard.getElementsByTagName("span")[2].innerText =  `${Math.round(currentWeather.hourly?.temperature_2m[index+startIndex])}°`;
+        getIcon(hourCard.getElementsByTagName("img")[0], currentWeather.hourly?.weather_code[index+startIndex]);
     })
 }
 function toggleUnitsDropdown() {
@@ -237,6 +276,13 @@ function toggleDaysDropdown() {
     daysDropdown.classList.toggle("visible");
     if(daysDropdown.classList.contains("visible")) daysDropdown.setAttribute("aria-expanded", "true");
     else daysDropdown.setAttribute("aria-expanded", "false");
+}
+
+function getIcon(img, weatherCode){
+    const iconName = weatherIconMap[weatherCode];
+    img.src = `src/assets/images/icon-${iconName}.webp`;
+    img.alt = iconName;
+    img.classList.add("opacity-100");
 }
 
 searchBar.addEventListener("input", (e) => {
