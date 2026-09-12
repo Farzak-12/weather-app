@@ -41,6 +41,7 @@ dailyCards.forEach((card) => {
 })
 const hourlySection = document.getElementById("hourly-section");
 const hourlyDetails = document.querySelectorAll('[data-group="hourly-details"]');
+const hourCards = document.getElementById("hour-cards");
 
 const unitAppend = {
     celcius: "",
@@ -209,7 +210,6 @@ function loadDate(dailyData) {
 
     dailyCards.forEach((card, index )=> {
         getIcon(card.getElementsByTagName("img")[0], dailyData.weather_code[index]);
-        console.log(card.getElementsByTagName("img")[0])
     });
 }
 
@@ -242,17 +242,33 @@ function updateHourlyWeather(hourlyData) {
         btn.innerText = new Date(hourlyData?.time[index*24]).toLocaleDateString("en-GB",{weekday:"long"})
     })
 
-    loadHourly(currentDate);
+    const currentTime = Number(new Date(currentWeather.current?.time).toLocaleTimeString("en-US",{hour: "numeric"}).slice(0,1));
+    loadHourly(currentDate, currentTime);
+
+    [...daysDropdownBtns]
+        .filter(day => day !== daysDropdownBtns[0])
+        .forEach(otherBtn => otherBtn.classList.remove("day-selected"));
+        daysDropdownBtns[0].classList.add("day-selected");
 }
 
-function loadHourly(localeDate) {
-    const startIndex = currentWeather.hourly?.time.map(time => new Date(time).toLocaleDateString("en-GB",{weekday:"long"})).indexOf(localeDate);
-    
-    hourlyDetails.forEach((hourCard,index)=>{
-        hourCard.getElementsByTagName("span")[1].innerText = new Date(currentWeather.hourly?.time[index+startIndex]).toLocaleTimeString("en-US",{hour:'numeric',hour12:true});
-        hourCard.getElementsByTagName("span")[2].innerText =  `${Math.round(currentWeather.hourly?.temperature_2m[index+startIndex])}°`;
-        getIcon(hourCard.getElementsByTagName("img")[0], currentWeather.hourly?.weather_code[index+startIndex]);
-    })
+function loadHourly(localeDate, startTime) {
+    const startIndex = currentWeather.hourly?.time.map(time => new Date(time).toLocaleDateString("en-GB",{weekday:"long"})).indexOf(localeDate) + startTime;
+
+    hourCards.innerHTML =""
+
+    let htmlArr = ""
+    for(let i = 0; i < 24; i++){
+        htmlArr += `<div data-group="hourly-details" class="bg-neutral-700 border border-neutral-600 px-3 py-1 flex justify-between items-center rounded-md">
+        <span class="flex w-26 gap-x-2 items-center">
+          <img src="src/assets/images/icon-${weatherIconMap[currentWeather.hourly?.weather_code[i+startIndex]]}.webp" alt="overcast" class="w-10 h-10">
+          <span class="font-medium text-md">${new Date(currentWeather.hourly?.time[i+startIndex]).toLocaleTimeString("en-US",{hour:'numeric',hour12:true})}</span>
+        </span>
+        <span class="font-light text-sm">${Math.round(currentWeather.hourly?.temperature_2m[i+startIndex])}°</span>
+      </div>`
+    }
+
+   
+    hourCards.innerHTML =  htmlArr;
 }
 function toggleUnitsDropdown() {
     unitsDropdown.classList.toggle("opacity-0");
@@ -283,6 +299,7 @@ function getIcon(img, weatherCode){
     img.src = `src/assets/images/icon-${iconName}.webp`;
     img.alt = iconName;
     img.classList.add("opacity-100");
+    
 }
 
 searchBar.addEventListener("input", (e) => {
@@ -339,9 +356,11 @@ daysDropdownBtn.addEventListener("mousedown", ()=> {
     toggleDaysDropdown();
 });
 
-daysDropdownBtns.forEach((btn => {(
+daysDropdownBtns.forEach(((btn,index) => {(
     btn.addEventListener("click", ()=>{
-        loadHourly(btn.innerText);
+        const startTime = index === 0?  Number(new Date(currentWeather.current?.time).toLocaleTimeString("en-US",{hour: "numeric"}).slice(0,1)) : 0;
+        console.log(startTime);
+        loadHourly(btn.innerText, startTime);
         toggleDaysDropdown();
 
         [...daysDropdownBtns]
