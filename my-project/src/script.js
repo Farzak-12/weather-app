@@ -230,7 +230,7 @@ function updateCurrentWeather(place, data) {
     feelsLike.innerText = `${Math.round(data.current?.apparent_temperature)}°`;
     humidity.innerText = `${data.current?.relative_humidity_2m}%`;
     wind.innerText = `${Math.round(data.current?.wind_speed_10m)} ${localStorage.getItem('wind') || "km/h"}`;
-    precipitation.innerText = `${Math.round(data.current?.precipitation)} ${unitAppend[localStorage.getItem('precipitation') || "millimeters"][1]}`;
+    precipitation.innerText = `${data.current?.precipitation} ${unitAppend[localStorage.getItem('precipitation') || "millimeters"][1]}`;
 }
 
 function updateHourlyWeather(hourlyData) {
