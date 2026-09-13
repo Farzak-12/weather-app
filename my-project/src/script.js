@@ -242,7 +242,7 @@ function updateHourlyWeather(hourlyData) {
         btn.innerText = new Date(hourlyData?.time[index*24]).toLocaleDateString("en-GB",{weekday:"long"})
     })
 
-    const currentTime = Number(new Date(currentWeather.current?.time).toLocaleTimeString("en-US",{hour: "numeric"}).slice(0,1));
+    const currentTime = Number(new Date(currentWeather.current?.time).toLocaleTimeString("en-US",{hour12: false}).slice(0,2));
     loadHourly(currentDate, currentTime);
 
     [...daysDropdownBtns]
@@ -358,8 +358,7 @@ daysDropdownBtn.addEventListener("mousedown", ()=> {
 
 daysDropdownBtns.forEach(((btn,index) => {(
     btn.addEventListener("click", ()=>{
-        const startTime = index === 0?  Number(new Date(currentWeather.current?.time).toLocaleTimeString("en-US",{hour: "numeric"}).slice(0,1)) : 0;
-        console.log(startTime);
+        const startTime = index === 0?  Number(new Date(currentWeather.current?.time).toLocaleTimeString("en-US",{hour12: false}).slice(0,2)) : 0;
         loadHourly(btn.innerText, startTime);
         toggleDaysDropdown();
 
